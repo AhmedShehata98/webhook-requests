@@ -3,6 +3,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
   loading: false,
   error: false,
+  requestMenu: "params",
+  bodyRequestType: "none-use",
+  inputMethod: false, // bulk input key&& value
   data: {
     url: "",
     method: "GET",
@@ -36,8 +39,24 @@ export const appSlice = createSlice({
       state.data.headers.key = actions.payload.key;
       state.data.headers.value = actions.payload.value;
     },
+    CHANGE_REQUEST_MENU: (state, actions) => {
+      state.requestMenu = actions.payload.requestMenu;
+    },
+    CHANGE_BODY_REQUEST_TYPE: (state, actions) => {
+      state.bodyRequestType = actions.payload.bodyRequestType;
+    },
+
+    CHANGE_REQUEST_INPUTM_METHOD: (state, actions) => {
+      state.inputMethod = actions.payload.inputMethod;
+    },
   },
 });
 
-export const { GET_REQUEST_BODY, GET_REQUEST_HEADERS, GET_REQUEST_PARAMS } =
-  appSlice.actions;
+export const {
+  GET_REQUEST_BODY,
+  GET_REQUEST_HEADERS,
+  GET_REQUEST_PARAMS,
+  CHANGE_REQUEST_MENU,
+  CHANGE_BODY_REQUEST_TYPE,
+  CHANGE_REQUEST_INPUTM_METHOD,
+} = appSlice.actions;

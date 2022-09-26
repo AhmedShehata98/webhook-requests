@@ -1,11 +1,23 @@
 import React, { useCallback } from "react";
 
+// redux slice
+import { CHANGE_REQUEST_MENU } from "../Redux/Slice/AppSlice";
+
+// 3rd party libraries
+import { useDispatch } from "react-redux";
+
+// utilities
+import { requestMenuItems } from "../utilities/RequestMenuItems";
+
 function RequestOptions(props) {
+  const dispatch = useDispatch();
+
   const handleGetTargetMenu = useCallback((target, e) => {
     e.preventDefault();
-    // e.stopPropagation();
-    props.setRequestMenu((prev) => (prev = target));
+    e.stopPropagation();
+    dispatch(CHANGE_REQUEST_MENU({ requestMenu: target }));
   }, []);
+  //
   const handleActiveClass = ({ target }) => {
     let buttons = Array.from(target.parentElement.children);
     buttons.forEach(
@@ -21,7 +33,7 @@ function RequestOptions(props) {
         className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 hover:text-slate-800 activeBtn"
         type="button"
         onClick={(e) => {
-          handleGetTargetMenu("params", e);
+          handleGetTargetMenu(requestMenuItems.params, e);
           handleActiveClass(e);
         }}
       >
@@ -31,7 +43,7 @@ function RequestOptions(props) {
         className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 hover:text-slate-800"
         type="button"
         onClick={(e) => {
-          handleGetTargetMenu("headers", e);
+          handleGetTargetMenu(requestMenuItems.headers, e);
           handleActiveClass(e);
         }}
       >
@@ -41,7 +53,7 @@ function RequestOptions(props) {
         className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 hover:text-slate-800"
         type="button"
         onClick={(e) => {
-          handleGetTargetMenu("body", e);
+          handleGetTargetMenu(requestMenuItems.body, e);
           handleActiveClass(e);
         }}
       >

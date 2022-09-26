@@ -9,36 +9,44 @@ import {
 
 // 3rd party libraries
 import { useSelector, useDispatch } from "react-redux";
+import { requestMenuItems } from "../utilities/RequestMenuItems";
 
 function InputField(props) {
   const {
     app: {
+      requestMenu,
       data: { params, bodyData, headers },
     },
   } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
-    switch (props.$requestMenu) {
-      case "headers":
+    switch (requestMenu) {
+      case requestMenuItems.headers:
         dispatch(
           e.target.name === "key"
             ? GET_REQUEST_HEADERS({ key: e.target.value })
             : GET_REQUEST_HEADERS({ value: e.target.value })
         );
         break;
-      case "body":
+      case requestMenuItems.body:
         dispatch(
-          GET_REQUEST_BODY({ key: e.target.value, value: e.target.value })
+          e.target.name === "key"
+            ? GET_REQUEST_BODY({ key: e.target.value })
+            : GET_REQUEST_BODY({ value: e.target.value })
         );
         break;
-      case "params":
+      case requestMenuItems.params:
         dispatch(
-          GET_REQUEST_PARAMS({ key: e.target.value, value: e.target.value })
+          e.target.name === "key"
+            ? GET_REQUEST_PARAMS({ ...params, key: e.target.value })
+            : GET_REQUEST_PARAMS({ ...params, value: e.target.value })
         );
       default:
         dispatch(
-          GET_REQUEST_PARAMS({ key: e.target.value, value: e.target.value })
+          e.target.name === "key"
+            ? GET_REQUEST_PARAMS({ ...params, key: e.target.value })
+            : GET_REQUEST_PARAMS({ ...params, value: e.target.value })
         );
         break;
     }
@@ -50,11 +58,11 @@ function InputField(props) {
       }
       onChange={handleChange}
       value={(function () {
-        if (props.$requestMenu === "headers") {
+        if (props.requestMenu === requestMenuItems.headers) {
           props.name === "key" ? headers.key : headers.value;
-        } else if (props.$requestMenu === "body") {
+        } else if (props.requestMenu === requestMenuItems.body) {
           props.name === "key" ? bodyData.key : bodyData.value;
-        } else if (props.$requestMenu === "params") {
+        } else if (props.requestMenu === requestMenuItems.params) {
           props.name === "key" ? params.key : params.value;
         } else {
           props.name === "key" ? params.key : params.value;
@@ -65,4 +73,4 @@ function InputField(props) {
   );
 }
 
-export default InputField;
+export default React.memo(InputField);

@@ -25,26 +25,9 @@ const WebhookApp = () => {
       data: { method, url },
     },
   } = useSelector((state) => state);
-  const [requestMenu, setRequestMenu] = useState("params");
 
   const handleChangeFormData = () => {};
   const handleSendData = () => {};
-  const handleRequestMenu = () => {
-    switch (requestMenu) {
-      case "params":
-        return <ParamsInput $requestMenu={requestMenu} />;
-        break;
-      case "headers":
-        return <HeaderInput $requestMenu={requestMenu} />;
-        break;
-      case "body":
-        return <BodyInput $requestMenu={requestMenu} />;
-        break;
-      default:
-        return <ParamsInput $requestMenu={requestMenu} />;
-        break;
-    }
-  };
 
   return (
     <PageWrapper>
@@ -92,8 +75,10 @@ const WebhookApp = () => {
             </ControlsBoxWrapper>
             <RequestPannel>
               <p className="font-normal uppercase">resquest</p>
-              <RequestOptions setRequestMenu={setRequestMenu} />
-              {handleRequestMenu()}
+              <RequestOptions />
+              <ParamsInput />
+              <HeaderInput />
+              <BodyInput />
             </RequestPannel>
             <ResponsePannel />
           </div>
@@ -103,4 +88,4 @@ const WebhookApp = () => {
   );
 };
 
-export default WebhookApp;
+export default React.memo(WebhookApp);

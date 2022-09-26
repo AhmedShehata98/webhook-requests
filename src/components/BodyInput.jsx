@@ -1,18 +1,29 @@
 import React, { useState } from "react";
-import KeyAndValueInput from "./KeyAndValueInput";
+import ProparytiesInputListWrapper from "./ProparytiesInputListWrapper";
+import PropertiesHeaddingItems from "./PropertiesHeaddingItems";
+import PropertiesInputItem from "./PropertiesInputItem";
 import RowInput from "./RowInput";
 
-function BodyInput({ $requestMenu, setFormData }) {
-  const [bodyRequestOption, setBodyRequestOption] = useState("form-data");
+// 3rd party libraries
+import { useDispatch, useSelector } from "react-redux";
+
+// redux slice
+import { CHANGE_BODY_REQUEST_TYPE } from "../Redux/Slice/AppSlice";
+
+function BodyInput() {
+  const {
+    app: { requestMenu, inputMethod },
+  } = useSelector((s) => s);
+  const dispatch = useDispatch();
 
   const handleSelectReqOption = (e) => {
     const id = e.target.id;
-    setBodyRequestOption(id);
+    dispatch(CHANGE_BODY_REQUEST_TYPE({ bodyRequestType: id }));
     e.target.value = "on";
   };
 
   return (
-    <div>
+    <div className={requestMenu === "body" ? "inline-block" : "hidden"}>
       <ul className="flex items-start justify-center mb-2 gap-4">
         <li className="min-w-20 border border-emerald-600 rounded-full px-4 flex items-center justify-center gap-2 bg-slate-800 ">
           <input
@@ -75,18 +86,15 @@ function BodyInput({ $requestMenu, setFormData }) {
           </label>
         </li>
       </ul>
-
-      {$requestMenu === "body" && bodyRequestOption !== "raw" && (
-        <KeyAndValueInput
-          bodyRequestOption={bodyRequestOption}
-          $requestMenu={$requestMenu}
-        />
+      {inputMethod === false && requestMenu === "body" && (
+        <ProparytiesInputListWrapper>
+          <PropertiesHeaddingItems />
+          <PropertiesInputItem />
+        </ProparytiesInputListWrapper>
       )}
-      {$requestMenu === "body" && bodyRequestOption === "raw" && (
-        <RowInput bodyRequestOption={bodyRequestOption} />
-      )}
+      {inputMethod === true && requestMenu === "body" && <RowInput />}
     </div>
   );
 }
 
-export default BodyInput;
+export default React.memo(BodyInput);

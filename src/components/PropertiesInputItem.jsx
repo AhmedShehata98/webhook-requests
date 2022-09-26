@@ -16,36 +16,27 @@ import {
 } from "../Redux/Slice/AppSlice";
 import InputField from "./InputField";
 
-function PropertiesInputItem({
-  bodyRequestOption,
-  $requestMenu,
-  handleInputChange,
-  formData,
-}) {
+function PropertiesInputItem() {
+  const {
+    app: { bodyRequestType },
+  } = useSelector((s) => s);
+
+  const [FileTypeSelectd, setFileTypeSelectd] = useState("text");
   return (
     <div className="bg-slate-700 flex text-center ">
       <span
         key={nanoid(4)}
         className="w-11 font-medium uppercase flex justify-center items-center"
       >
-        <InputField
-          type={"checkbox"}
-          name={"selected-property"}
-          $requestMenu={$requestMenu}
-        />
+        <InputField type={"checkbox"} name={"selected-property"} />
       </span>
       {/* key input */}
       <span
         key={nanoid(4)}
         className="w-2/5 flex justify-start items-center  font-medium uppercase relative"
       >
-        <InputField
-          type={"text"}
-          name={"key"}
-          placeholder="key"
-          $requestMenu={$requestMenu}
-        />
-        {/* {bodyRequestOption === "form-data" && (
+        <InputField type={"text"} name={"key"} placeholder="key" />
+        {bodyRequestType === "form-data" && (
           <Select
             extraclass={"absolute z-10 top-50 right-8 py-1 bg-emerald-700"}
             name={"input-type"}
@@ -58,7 +49,7 @@ function PropertiesInputItem({
             <option value="file">file</option>
             <option value="text">text</option>
           </Select>
-        )} */}
+        )}
       </span>
 
       <span
@@ -66,15 +57,18 @@ function PropertiesInputItem({
         className="w-2/5 flex justify-start items-center font-medium uppercase"
       >
         <InputField
-          className="request-input-field"
-          type={"text"}
+          className={
+            bodyRequestType === "form-data"
+              ? "input-file-styles"
+              : "request-input-field"
+          }
+          type={FileTypeSelectd}
           name={"value"}
           placeholder="value"
-          $requestMenu={$requestMenu}
         />
       </span>
     </div>
   );
 }
 
-export default PropertiesInputItem;
+export default React.memo(PropertiesInputItem);

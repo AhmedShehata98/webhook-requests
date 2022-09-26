@@ -1,14 +1,24 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { CHANGE_REQUEST_INPUTM_METHOD } from "../Redux/Slice/AppSlice";
 import Button from "./Button";
 
-function RowInput({ bodyRequestOption, setInputMethod }) {
+function RowInput() {
+  const {
+    app: { inputMethod, bodyRequestType },
+  } = useSelector((s) => s);
+  const dispatch = useDispatch();
   return (
     <div className="flex flex-col items-start min-w-full bg-slate-500">
       <span className="flex justify-end bg-slate-500 px-1 py-2 min-w-full border-b divide-x ">
         <Button
-          $extraؤlass={bodyRequestOption === "raw" ? "hidden" : "visible"}
+          $extraؤlass={bodyRequestType === "raw" ? "hidden" : "visible"}
           type={"button"}
-          onClick={() => setInputMethod((prev) => !prev)}
+          onClick={dispatch(
+            CHANGE_REQUEST_INPUTM_METHOD({
+              inputMethod: inputMethod === "false" ? true : false,
+            })
+          )}
         >
           key & value edit
         </Button>
