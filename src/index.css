@@ -1,5 +1,19 @@
 @tailwind base;
+@layer base {
+  .input-file-styles {
+    @apply bg-emerald-100 text-emerald-900 font-sans font-bold rounded-full border-0 px-4 hover:bg-emerald-300 my-1 cursor-pointer w-fit;
+  }
+}
 @tailwind components;
+
+@layer components {
+  .checkbox-input {
+    @apply mx-auto w-full accent-emerald-700 hover:accent-emerald-600 inline-block;
+  }
+  .request-input-field {
+    @apply border-0 bg-slate-800 my-1  w-9/12 px-3 py-1 focus:outline-none focus:bg-slate-900;
+  }
+}
 @tailwind utilities;
 
 @layer utilities {

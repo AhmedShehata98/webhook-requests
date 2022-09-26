@@ -1,60 +1,76 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
+
+// 3rd party libraries
+import { nanoid } from "nanoid";
+
+//components
+import ProparytiesInputListWrapper from "./ProparytiesInputListWrapper";
+import PropertiesInputItem from "./PropertiesInputItem";
 import Button from "./Button";
 import RowInput from "./RowInput";
 
-function KeyAndValueInput() {
+function KeyAndValueInput({ bodyRequestOption, $requestMenu }) {
   const [inputMethod, setInputMethod] = useState(false);
+  const [formData, setformData] = useState({
+    key: "",
+    value: "",
+    "selected-property": false,
+  });
+  const handleInputChange = useCallback((e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+
+    if (name === "selected-property") {
+      setformData((data) => ({
+        ...data,
+        ["selected-property"]: !data["selected-property"],
+      }));
+    } else {
+      setformData((data) => ({ ...data, [name]: value }));
+    }
+  }, []);
 
   return (
     <>
       {inputMethod === false && (
-        <table className="table-fixed min-w-full ">
-          <thead className=" bg-slate-500 border-b-[2px] border-slate-300">
-            <tr className="table-row divide-x-[1px] divide-slate-300">
-              <th className="uppercase table-cell py-3 w-14">#</th>
-              <th className="uppercase table-cell py-3">key</th>
-              <th className="uppercase table-cell py-3">value</th>
-              <th className="uppercase table-cell py-3 w-32">
-                <Button
-                  $extraClass={"m-auto"}
-                  onClick={() => setInputMethod((prev) => !prev)}
-                >
-                  bulk edit
-                </Button>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="table-row bg-slate-800 border-b divide-x">
-              <td className="table-cell flex items-center justify-center">
-                <input
-                  className="mx-auto w-full accent-emerald-700 hover:accent-emerald-600 inline-block"
-                  name="query"
-                  id="query-check"
-                  type={"checkbox"}
-                />
-              </td>
-              <td className="table-cell  flex items-center">
-                <input
-                  className="w-full h-9 bg-slate-600 outline-none border border-slate-800 hover:border px-2 focus:border-emerald-300 caret-emerald-500"
-                  type="text"
-                  name="key"
-                  placeholder="key .."
-                />
-              </td>
-              <td className="table-cell  flex items-center">
-                <input
-                  className="w-full h-9 bg-slate-600 outline-none border border-slate-800 hover:border px-2 focus:border-emerald-300 caret-emerald-500"
-                  type="text"
-                  name="value"
-                  placeholder="value.."
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <ProparytiesInputListWrapper>
+          <span
+            key={nanoid(4)}
+            className="bg-slate-400 flex p-[4.5px] text-center divide-x-2"
+          >
+            <span key={nanoid(4)} className="w-10 font-medium uppercase">
+              #
+            </span>
+            <div key={nanoid(4)} className="w-2/5 font-medium uppercase">
+              key
+            </div>
+            <div key={nanoid(4)} className="w-2/5 font-medium uppercase">
+              value
+            </div>
+            <div key={nanoid(4)} className="w-1/6 flex justify-center">
+              <Button
+                type={"button"}
+                onClick={() => setInputMethod((prev) => !prev)}
+              >
+                edit bulk
+              </Button>
+            </div>
+          </span>
+          <PropertiesInputItem
+            key={nanoid(5)}
+            bodyRequestOption={bodyRequestOption}
+            $requestMenu={$requestMenu}
+            formData={formData}
+            handleInputChange={handleInputChange}
+          />
+        </ProparytiesInputListWrapper>
       )}
-      {inputMethod && <RowInput setInputMethod={setInputMethod} />}
+      {inputMethod && (
+        <RowInput
+          setInputMethod={setInputMethod}
+          bodyRequestOption={bodyRequestOption}
+        />
+      )}
     </>
   );
 }

@@ -1,13 +1,14 @@
 import React from "react";
 import Button from "./Button";
 
-function RowInput(props) {
+function RowInput({ bodyRequestOption, setInputMethod }) {
   return (
     <div className="flex flex-col items-start min-w-full bg-slate-500">
-      <span className="flex justify-end bg-slate-500 px-1 py-2 min-w-full border-b divide-x">
+      <span className="flex justify-end bg-slate-500 px-1 py-2 min-w-full border-b divide-x ">
         <Button
+          $extraؤlass={bodyRequestOption === "raw" ? "hidden" : "visible"}
           type={"button"}
-          onClick={() => props.setInputMethod((prev) => !prev)}
+          onClick={() => setInputMethod((prev) => !prev)}
         >
           key & value edit
         </Button>

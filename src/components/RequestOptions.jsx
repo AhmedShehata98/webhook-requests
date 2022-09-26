@@ -18,7 +18,7 @@ function RequestOptions(props) {
   return (
     <nav className="w-max h-max flex flex-row mb-2">
       <button
-        className="pl-0 pr-5 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 hover:text-slate-800 "
+        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 hover:text-slate-800 activeBtn"
         type="button"
         onClick={(e) => {
           handleGetTargetMenu("params", e);
@@ -28,7 +28,7 @@ function RequestOptions(props) {
         params
       </button>
       <button
-        className="pl-5 pr-5 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 hover:text-slate-800"
+        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 hover:text-slate-800"
         type="button"
         onClick={(e) => {
           handleGetTargetMenu("headers", e);
@@ -38,7 +38,7 @@ function RequestOptions(props) {
         headers
       </button>
       <button
-        className="pl-5 pr-5 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 hover:text-slate-800"
+        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 hover:text-slate-800"
         type="button"
         onClick={(e) => {
           handleGetTargetMenu("body", e);

@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import KeyAndValueInput from "./KeyAndValueInput";
+import RowInput from "./RowInput";
 
-function BodyInput() {
+function BodyInput({ $requestMenu, setFormData }) {
+  const [bodyRequestOption, setBodyRequestOption] = useState("form-data");
+
+  const handleSelectReqOption = (e) => {
+    const id = e.target.id;
+    setBodyRequestOption(id);
+    e.target.value = "on";
+  };
+
   return (
     <div>
       <ul className="flex items-start justify-center mb-2 gap-4">
@@ -11,9 +20,10 @@ function BodyInput() {
             type="radio"
             id="none-use"
             name="body-method"
+            onChange={handleSelectReqOption}
           />
           <label
-            className="leading-7 text-xs text-emerald-100 font-bold capitalize "
+            className="leading-7 text-xs text-emerald-100 font-bold capitalize cursor-pointer "
             htmlFor="none-use"
           >
             none
@@ -25,10 +35,10 @@ function BodyInput() {
             type="radio"
             id="form-data"
             name="body-method"
-            checked
+            onChange={handleSelectReqOption}
           />
           <label
-            className="leading-7 text-xs text-emerald-100 font-bold capitalize "
+            className="leading-7 text-xs text-emerald-100 font-bold capitalize cursor-pointer "
             htmlFor="form-data"
           >
             form-data
@@ -40,9 +50,10 @@ function BodyInput() {
             type="radio"
             id="x-www-form-urlencoded"
             name="body-method"
+            onChange={handleSelectReqOption}
           />
           <label
-            className="leading-7 text-xs text-emerald-100 font-bold capitalize "
+            className="leading-7 text-xs text-emerald-100 font-bold capitalize cursor-pointer "
             htmlFor="x-www-form-urlencoded"
           >
             x-www-form-urlencoded
@@ -54,16 +65,26 @@ function BodyInput() {
             type="radio"
             id="raw"
             name="body-method"
+            onChange={handleSelectReqOption}
           />
           <label
-            className="leading-7 text-xs text-emerald-100 font-bold capitalize "
+            className="leading-7 text-xs text-emerald-100 font-bold capitalize cursor-pointer "
             htmlFor="raw"
           >
             raw
           </label>
         </li>
       </ul>
-      <KeyAndValueInput />
+
+      {$requestMenu === "body" && bodyRequestOption !== "raw" && (
+        <KeyAndValueInput
+          bodyRequestOption={bodyRequestOption}
+          $requestMenu={$requestMenu}
+        />
+      )}
+      {$requestMenu === "body" && bodyRequestOption === "raw" && (
+        <RowInput bodyRequestOption={bodyRequestOption} />
+      )}
     </div>
   );
 }

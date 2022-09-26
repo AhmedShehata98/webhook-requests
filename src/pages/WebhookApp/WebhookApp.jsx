@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import { Link, useOutlet } from "react-router-dom";
+
+//3rd party libraries
+import { useSelector, useDispatch } from "react-redux";
+
+// components
 import Asidebar from "../../components/Asidebar";
 import Button from "../../components/Button";
 import ControlsBoxWrapper from "../../components/ControlsBoxWrapper";
 import MainApp from "../../components/MainApp";
-import QueryInput from "../../components/QueryInput";
+import ParamsInput from "../../components/ParamsInput";
 import BodyInput from "../../components/BodyInput";
 import HeaderInput from "../../components/HeaderInput";
 import RequestOptions from "../../components/RequestOptions";
@@ -15,34 +20,28 @@ import PageWrapper from "../../components/PageWrapper";
 import RequestPannel from "../../components/RequestPannel";
 
 const WebhookApp = () => {
+  const {
+    app: {
+      data: { method, url },
+    },
+  } = useSelector((state) => state);
   const [requestMenu, setRequestMenu] = useState("params");
-  const [formData, setFormData] = useState({
-    url: "",
-    method: "GET",
-    bodyData: {
-      key: "",
-      value: "",
-    },
-    headers: {
-      key: "",
-      value: "",
-    },
-  });
+
   const handleChangeFormData = () => {};
   const handleSendData = () => {};
   const handleRequestMenu = () => {
     switch (requestMenu) {
       case "params":
-        return <QueryInput $requestMenu={requestMenu} />;
+        return <ParamsInput $requestMenu={requestMenu} />;
         break;
       case "headers":
-        return <HeaderInput />;
+        return <HeaderInput $requestMenu={requestMenu} />;
         break;
       case "body":
-        return <BodyInput />;
+        return <BodyInput $requestMenu={requestMenu} />;
         break;
       default:
-        return <QueryInput $requestMenu={requestMenu} />;
+        return <ParamsInput $requestMenu={requestMenu} />;
         break;
     }
   };
@@ -56,10 +55,10 @@ const WebhookApp = () => {
           <div className="w-full h-full flex flex-col">
             <ControlsBoxWrapper>
               <Select
-                $extraClass={"w-16 md:w-40 h-100 text-start pl-4"}
+                extraclass={"w-16 md:w-40 h-100 text-start pl-4"}
                 name="method"
                 id="method"
-                value={formData.method}
+                value={method}
                 onChange={handleChangeFormData}
               >
                 <option value="GET">GET</option>
@@ -77,13 +76,12 @@ const WebhookApp = () => {
                 id="url"
                 type={"text"}
                 placeholder="http://www.example.com/some/url"
-                value={formData.url}
+                value={url}
                 onChange={handleChangeFormData}
               />
               <Button
                 type={"button"}
-                $outline
-                $extraClass={"ml-2 w-28 "}
+                extraclass={"ml-2 w-28 "}
                 onClick={() => handleSendData()}
               >
                 send

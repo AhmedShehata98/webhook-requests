@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { navbar } from "../../utilities/constans";
 import WebHookImg from "../../assets/WebHook.png";
+import { nanoid } from "nanoid";
 
 const Headerbar = () => {
   const [toggle, settoggle] = useState(window.innerWidth <= 768 ? false : true);
@@ -27,7 +28,7 @@ const Headerbar = () => {
         }}
       >
         {toggle ? (
-          <i class="fi fi-sr-x m-auto leading-3"></i>
+          <i className="fi fi-sr-x m-auto leading-3"></i>
         ) : (
           <i className="fi fi-sr-menu-burger m-auto leading-3"></i>
         )}
@@ -38,6 +39,7 @@ const Headerbar = () => {
             <a
               className="hover:bg-emerald-600 focus:bg-emerald-600 p-1 flex-1 md:w-20 text-center md:rounded-full "
               href={l.id}
+              key={nanoid(3)}
             >
               {l.title}
             </a>
