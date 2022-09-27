@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ProparytiesInputListWrapper from "./ProparytiesInputListWrapper";
 import PropertiesHeaddingItems from "./PropertiesHeaddingItems";
 import PropertiesInputItem from "./PropertiesInputItem";
@@ -9,10 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 // redux slice
 import { CHANGE_BODY_REQUEST_TYPE } from "../Redux/Slice/AppSlice";
+import RequestCell from "./RequestCell";
+import { nanoid } from "nanoid";
+import Select from "./Select";
 
 function BodyInput() {
   const {
-    app: { requestMenu, inputMethod },
+    app: { requestMenu, inputMethod, bodyRequestType },
   } = useSelector((s) => s);
   const dispatch = useDispatch();
 
@@ -20,6 +23,32 @@ function BodyInput() {
     const id = e.target.id;
     dispatch(CHANGE_BODY_REQUEST_TYPE({ bodyRequestType: id }));
     e.target.value = "on";
+  };
+
+  const bodyDataRef = useRef({
+    key: "",
+    value: "",
+  });
+  const [inputTypeSelector, setInputTypeSelector] = useState("text");
+  const keyRef = useRef(null);
+  const valueRef = useRef(null);
+
+  const handleInputsChange = (e) => {
+    let name = e.target.name;
+    let type = e.target.type;
+    let file = e.target?.files[0];
+    let value = e.target.value;
+    if (type === "text") {
+      bodyDataRef.current = { ...bodyDataRef.current, [name]: value };
+    }
+    if (type === "file") {
+      bodyDataRef.current = { ...bodyDataRef.current, [name]: file };
+    }
+  };
+
+  const handleTypeSelector = (e) => {
+    let value = e.target.value;
+    setInputTypeSelector(value);
   };
 
   return (
@@ -89,7 +118,53 @@ function BodyInput() {
       {inputMethod === false && requestMenu === "body" && (
         <ProparytiesInputListWrapper>
           <PropertiesHeaddingItems />
-          <PropertiesInputItem />
+          <PropertiesInputItem>
+            <RequestCell
+              key={nanoid(4)}
+              className="w-11 font-medium uppercase flex justify-center items-center"
+            >
+              <input type={"checkbox"} name={"selected-property"} />
+            </RequestCell>
+            <RequestCell
+              key={nanoid(4)}
+              className="w-2/5 flex justify-start items-center  font-medium uppercase relative"
+            >
+              <input
+                ref={keyRef}
+                className={"request-input-field"}
+                type={"text"}
+                name={"key"}
+                placeholder="key"
+                onChange={handleInputsChange}
+              />
+              {bodyRequestType === "form-data" && (
+                <Select
+                  extraclass={
+                    "absolute z-10 top-50 right-4 py-[1.5px] px-2 rounded-full capitalize border border-emerald-100 !important"
+                  }
+                  name={"input-type"}
+                  onChange={handleTypeSelector}
+                  value={inputTypeSelector}
+                >
+                  <option value="file">file</option>
+                  <option value="text">text</option>
+                </Select>
+              )}
+            </RequestCell>
+            <RequestCell
+              key={nanoid(4)}
+              className="w-2/5 flex justify-start items-center font-medium uppercase "
+            >
+              <input
+                ref={valueRef}
+                className={"request-input-field"}
+                type={inputTypeSelector}
+                name={"value"}
+                placeholder="value"
+                onChange={handleInputsChange}
+              />
+            </RequestCell>
+          </PropertiesInputItem>
         </ProparytiesInputListWrapper>
       )}
       {inputMethod === true && requestMenu === "body" && <RowInput />}

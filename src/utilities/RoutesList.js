@@ -1,6 +1,6 @@
 export const RoutesLinks = {
   home: "/",
-  app: "/app",
+  webHookApp: "app",
   paramRequest: "/paramRequest",
   headersRequest: "/headersRequest",
   bodyRequest: "/bodyRequest",

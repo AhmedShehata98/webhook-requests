@@ -9,12 +9,10 @@ import { useDispatch } from "react-redux";
 // utilities
 import { requestMenuItems } from "../utilities/RequestMenuItems";
 
-function RequestOptions(props) {
+function RequestOptions() {
   const dispatch = useDispatch();
 
-  const handleGetTargetMenu = useCallback((target, e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleGetTargetMenu = useCallback((target) => {
     dispatch(CHANGE_REQUEST_MENU({ requestMenu: target }));
   }, []);
   //
@@ -30,7 +28,7 @@ function RequestOptions(props) {
   return (
     <nav className="w-max h-max flex flex-row mb-2">
       <button
-        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 hover:text-slate-800 activeBtn"
+        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400  activeBtn"
         type="button"
         onClick={(e) => {
           handleGetTargetMenu(requestMenuItems.params, e);
@@ -40,7 +38,7 @@ function RequestOptions(props) {
         params
       </button>
       <button
-        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 hover:text-slate-800"
+        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 "
         type="button"
         onClick={(e) => {
           handleGetTargetMenu(requestMenuItems.headers, e);
@@ -50,7 +48,7 @@ function RequestOptions(props) {
         headers
       </button>
       <button
-        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 hover:text-slate-800"
+        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 "
         type="button"
         onClick={(e) => {
           handleGetTargetMenu(requestMenuItems.body, e);

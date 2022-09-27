@@ -11,4 +11,4 @@ function MainApp(props) {
   );
 }
 
-export default MainApp;
+export default React.memo(MainApp);

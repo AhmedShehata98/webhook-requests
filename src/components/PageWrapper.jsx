@@ -11,4 +11,4 @@ function PageWrapper(props) {
   );
 }
 
-export default PageWrapper;
+export default React.memo(PageWrapper);
