@@ -11,7 +11,7 @@ import { GET_REQUEST_PARAMS } from "../Redux/Slice/AppSlice";
 
 // 3rd party libraries
 import { nanoid } from "nanoid";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 // utilities
 import { requestMenuItems } from "../utilities/RequestMenuItems";
@@ -19,9 +19,6 @@ import { useCallback } from "react";
 import { forwardRef } from "react";
 
 const ParamsInput = forwardRef((_, ref) => {
-  // const {
-  //   app: { requestMenu, inputMethod },
-  // } = useSelector((s) => s);
   const dispatch = useDispatch();
   const [clonedInputFields, setClonedInputFields] = useState([]);
   const headersListValueOjects = [];
@@ -60,7 +57,11 @@ const ParamsInput = forwardRef((_, ref) => {
             key={nanoid(4)}
             className="w-11 font-medium uppercase flex justify-center items-center"
           >
-            <input type={"checkbox"} name={"selected-property"} />
+            <input
+              className="accent-emerald-400"
+              type={"checkbox"}
+              name={"selected-property"}
+            />
           </RequestCell>
           <RequestCell
             key={nanoid(4)}
@@ -96,12 +97,24 @@ const ParamsInput = forwardRef((_, ref) => {
     setClonedInputFields((prev) => [...prev, clonedReactElement]);
   };
   const handlePushData = (e) => {
+    let checkboxElement =
+      e.target.parentElement.closest("div").firstChild.firstChild;
     let value = e.target.value;
+    let dataList = JSON.stringify(headrsList.current);
+    let currentInput = JSON.stringify(paramsDataRef.current);
+
     if (value !== "") {
-      headrsList.current.push(paramsDataRef.current);
+      if (dataList.includes(currentInput) === false) {
+        headrsList.current.push(paramsDataRef.current);
+        parseHeadersDataToValues(headrsList.current);
+        handleCloneInputsFields();
+        checkboxElement.checked = true;
+      } else {
+        console.log("includes");
+      }
       //
-      parseHeadersDataToValues(headrsList.current);
-      handleCloneInputsFields();
+      // send data to rwdux
+      dispatch(GET_REQUEST_PARAMS(headersListValueOjects));
     }
   };
 
@@ -114,7 +127,11 @@ const ParamsInput = forwardRef((_, ref) => {
             key={nanoid(4)}
             className="w-11 font-medium uppercase flex justify-center items-center"
           >
-            <input type={"checkbox"} name={"selected-property"} />
+            <input
+              type={"checkbox"}
+              name={"selected-property"}
+              className={"accent-emerald-400"}
+            />
           </RequestCell>
           <RequestCell
             key={nanoid(4)}

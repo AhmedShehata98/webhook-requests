@@ -7,7 +7,6 @@ const initialState = {
     isError: null,
     message: "",
   },
-  requestMenu: "params",
   bodyRequestType: "none-use",
   inputMethod: false, // bulk input key&& value
   data: {
@@ -15,10 +14,7 @@ const initialState = {
       url: "",
       method: "GET",
     },
-    params: {
-      key: "",
-      value: "",
-    },
+    params: {},
     bodyData: {
       key: "",
       value: "",
@@ -56,13 +52,10 @@ export const appSlice = createSlice({
       state.data.bodyData = { ...state.data.bodyData, ...actions.payload };
     },
     GET_REQUEST_PARAMS: (state, actions) => {
-      state.data.params = { ...state.data.params, ...actions.payload };
+      state.data.params = { ...actions.payload };
     },
     GET_REQUEST_HEADERS: (state, actions) => {
       state.data.headers = { ...state.data.headers, ...actions.payload };
-    },
-    CHANGE_REQUEST_MENU: (state, actions) => {
-      state.requestMenu = actions.payload.requestMenu;
     },
     CHANGE_BODY_REQUEST_TYPE: (state, actions) => {
       state.bodyRequestType = actions.payload.bodyRequestType;
