@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from "react";
+import React, { lazy, Suspense, useCallback, useRef, useState } from "react";
 import { Link, Outlet, useOutlet } from "react-router-dom";
 
 //3rd party libraries
@@ -37,6 +37,9 @@ const WebhookAppRoot = () => {
     },
   } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const ParamsInputRef = useRef(null);
+  const HeaderInputRef = useRef(null);
+  const BodyInputRef = useRef(null);
 
   const handleChangeFormData = (e) => {
     let name = e.target.name;
@@ -47,6 +50,24 @@ const WebhookAppRoot = () => {
     console.log("start sending");
     dispatch(FETCTH_DATA_REQUEST());
   };
+  const handleGetTargetMenu = useCallback((e) => {
+    let targetTabID = e.target.dataset.id;
+    let sectionID = [
+      ParamsInputRef.current,
+      HeaderInputRef.current,
+      BodyInputRef.current,
+    ];
+
+    sectionID.forEach((section) => {
+      if (section.id === targetTabID) {
+        section.classList.remove("hidden");
+        section.classList.add("block");
+      } else {
+        section.classList.remove("block");
+        section.classList.add("hidden");
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -105,11 +126,11 @@ const WebhookAppRoot = () => {
                 </Button>
               </ControlsBoxWrapper>
               <RequestPannel>
-                <p className="font-normal uppercase">resquest</p>
-                <RequestOptions />
-                <ParamsInput />
-                <HeaderInput />
-                <BodyInput />
+                <p className="font-normal uppercase ">resquest</p>
+                <RequestOptions handleGetTargetMenu={handleGetTargetMenu} />
+                <ParamsInput ref={ParamsInputRef} />
+                <HeaderInput ref={HeaderInputRef} />
+                <BodyInput ref={BodyInputRef} />
               </RequestPannel>
               <h5 className="mt-2 mb-1 font-sans uppercase ">response </h5>
               <ResponsePannel>

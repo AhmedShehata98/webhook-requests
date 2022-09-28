@@ -12,10 +12,11 @@ import { CHANGE_BODY_REQUEST_TYPE } from "../Redux/Slice/AppSlice";
 import RequestCell from "./RequestCell";
 import { nanoid } from "nanoid";
 import Select from "./Select";
+import { forwardRef } from "react";
 
-function BodyInput() {
+const BodyInput = forwardRef((_, ref) => {
   const {
-    app: { requestMenu, inputMethod, bodyRequestType },
+    app: { bodyRequestType },
   } = useSelector((s) => s);
   const dispatch = useDispatch();
 
@@ -52,9 +53,9 @@ function BodyInput() {
   };
 
   return (
-    <div className={requestMenu === "body" ? "inline-block" : "hidden"}>
-      <ul className="flex items-start justify-center mb-2 gap-4">
-        <li className="min-w-20 border border-emerald-600 rounded-full px-4 flex items-center justify-center gap-2 bg-slate-800 ">
+    <div className={"hidden"} id={"body"} ref={ref}>
+      <ul className="flex items-start justify-center mb-2 gap-4 w-full overflow-x-auto ">
+        <li className="min-w-20 w-20 border border-emerald-600 rounded-full px-2 flex items-center justify-center gap-2 bg-slate-800 ">
           <input
             className="accent-emerald-600"
             type="radio"
@@ -69,7 +70,7 @@ function BodyInput() {
             none
           </label>
         </li>
-        <li className="min-w-20 border border-emerald-600 rounded-full px-4 flex items-center justify-center gap-2 bg-slate-800 ">
+        <li className="min-w-20 w-fir border border-emerald-600 rounded-full px-2 flex items-center justify-center gap-2 bg-slate-800 ">
           <input
             className="accent-emerald-600"
             type="radio"
@@ -84,7 +85,7 @@ function BodyInput() {
             form-data
           </label>
         </li>
-        <li className="min-w-20 border border-emerald-600 rounded-full px-4 flex items-center justify-center gap-2 bg-slate-800 ">
+        <li className="min-w-20 w-fit border border-emerald-600 rounded-full px-2 flex items-center justify-center gap-2 bg-slate-800 ">
           <input
             className="accent-emerald-600"
             type="radio"
@@ -99,7 +100,7 @@ function BodyInput() {
             x-www-form-urlencoded
           </label>
         </li>
-        <li className="min-w-20 border border-emerald-600 rounded-full px-4 flex items-center justify-center gap-2 bg-slate-800 ">
+        <li className="min-w-20 w-fit border border-emerald-600 rounded-full px-2 flex items-center justify-center gap-2 bg-slate-800 ">
           <input
             className="accent-emerald-600"
             type="radio"
@@ -115,61 +116,59 @@ function BodyInput() {
           </label>
         </li>
       </ul>
-      {inputMethod === false && requestMenu === "body" && (
-        <ProparytiesInputListWrapper>
-          <PropertiesHeaddingItems />
-          <PropertiesInputItem>
-            <RequestCell
-              key={nanoid(4)}
-              className="w-11 font-medium uppercase flex justify-center items-center"
-            >
-              <input type={"checkbox"} name={"selected-property"} />
-            </RequestCell>
-            <RequestCell
-              key={nanoid(4)}
-              className="w-2/5 flex justify-start items-center  font-medium uppercase relative"
-            >
-              <input
-                ref={keyRef}
-                className={"request-input-field"}
-                type={"text"}
-                name={"key"}
-                placeholder="key"
-                onChange={handleInputsChange}
-              />
-              {bodyRequestType === "form-data" && (
-                <Select
-                  extraclass={
-                    "absolute z-10 top-50 right-4 py-[1.5px] px-2 rounded-full capitalize border border-emerald-100 !important"
-                  }
-                  name={"input-type"}
-                  onChange={handleTypeSelector}
-                  value={inputTypeSelector}
-                >
-                  <option value="file">file</option>
-                  <option value="text">text</option>
-                </Select>
-              )}
-            </RequestCell>
-            <RequestCell
-              key={nanoid(4)}
-              className="w-2/5 flex justify-start items-center font-medium uppercase "
-            >
-              <input
-                ref={valueRef}
-                className={"request-input-field"}
-                type={inputTypeSelector}
-                name={"value"}
-                placeholder="value"
-                onChange={handleInputsChange}
-              />
-            </RequestCell>
-          </PropertiesInputItem>
-        </ProparytiesInputListWrapper>
-      )}
-      {inputMethod === true && requestMenu === "body" && <RowInput />}
+
+      <ProparytiesInputListWrapper>
+        <PropertiesHeaddingItems />
+        <PropertiesInputItem>
+          <RequestCell
+            key={nanoid(4)}
+            className="w-11 font-medium uppercase flex justify-center items-center"
+          >
+            <input type={"checkbox"} name={"selected-property"} />
+          </RequestCell>
+          <RequestCell
+            key={nanoid(4)}
+            className="w-2/5 flex justify-start items-center  font-medium uppercase relative"
+          >
+            <input
+              ref={keyRef}
+              className={"request-input-field"}
+              type={"text"}
+              name={"key"}
+              placeholder="key"
+              onChange={handleInputsChange}
+            />
+            {bodyRequestType === "form-data" && (
+              <Select
+                extraclass={
+                  "absolute z-10 top-50 right-4 py-[1.5px] px-2 rounded-full capitalize border border-emerald-100 !important"
+                }
+                name={"input-type"}
+                onChange={handleTypeSelector}
+                value={inputTypeSelector}
+              >
+                <option value="file">file</option>
+                <option value="text">text</option>
+              </Select>
+            )}
+          </RequestCell>
+          <RequestCell
+            key={nanoid(4)}
+            className="w-2/5 flex justify-start items-center font-medium uppercase "
+          >
+            <input
+              ref={valueRef}
+              className={"request-input-field"}
+              type={inputTypeSelector}
+              name={"value"}
+              placeholder="value"
+              onChange={handleInputsChange}
+            />
+          </RequestCell>
+        </PropertiesInputItem>
+      </ProparytiesInputListWrapper>
     </div>
   );
-}
+});
 
 export default React.memo(BodyInput);

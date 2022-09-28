@@ -11,4 +11,4 @@ function RequestPannel(props) {
   );
 }
 
-export default RequestPannel;
+export default React.memo(RequestPannel);
