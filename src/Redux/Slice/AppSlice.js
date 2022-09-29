@@ -14,9 +14,31 @@ export const FETCTH_DATA_REQUEST = createAsyncThunk(
         method: data.basicData.method,
       });
       const result = await request;
-      return result;
+      return {
+        data: result.data,
+        headers: result.headers,
+        status: result.status,
+        statusText: result.statusText,
+      };
     } catch (error) {
-      throw rejectWithValue(error.message);
+      // throw rejectWithValue(error);
+      if (Boolean(error.response)) {
+        throw rejectWithValue({
+          ErrData: error.response.data,
+          ErrStatus: error.response.status,
+          ErrHeaders: error.response.headers,
+        });
+      } else if (Boolean(error.request)) {
+        throw rejectWithValue({
+          ErrData: error.request,
+          ErrStatus: 400,
+        });
+      } else {
+        throw rejectWithValue({
+          ErrData: error.message,
+          ErrStatus: 400,
+        });
+      }
     }
   }
 );
@@ -46,6 +68,8 @@ const initialState = {
   responseBody: null,
   responseHeaders: null,
   responseCookies: null,
+  responseStatusCode: "idel",
+  responseStatusText: "idel",
 };
 
 export const appSlice = createSlice({
@@ -94,9 +118,11 @@ export const appSlice = createSlice({
         isError: null,
         message: "",
       };
+      // state.responseCookies = actions.payload.config;
       state.responseBody = actions.payload.data;
       state.responseHeaders = actions.payload.headers;
-      state.responseCookies = actions.payload.config;
+      state.responseStatusCode = actions.payload.status;
+      state.responseStatusText = actions.payload.statusText;
       state.success = true;
     });
 
@@ -105,8 +131,9 @@ export const appSlice = createSlice({
       state.success = null;
       state.error = {
         isError: true,
-        message: actions.payload,
+        message: actions.payload.ErrData,
       };
+      state.responseStatusCode = actions.payload.ErrStatus;
     });
   },
 });

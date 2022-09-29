@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import JSONViewer from "react-json-viewer";
+import JSONPretty from "react-json-pretty";
+import "react-json-pretty/themes/monikai.css";
 
 function BodyResponse() {
   const {
@@ -10,11 +11,15 @@ function BodyResponse() {
   return (
     <div className="overflow-auto h-inherit">
       {Boolean(responseBody) && (
-        <JSONViewer style={{ color: "#fff" }} json={responseBody} />
+        <JSONPretty
+          id="body-pretty-data"
+          data={responseBody}
+          keyStyle={"color: #fcfcfc"}
+          valueStyle={"color: #d392ff"}
+          booleanStyle={"color: #31f7c6"}
+          stringStyle={"color: #d6da1b"}
+        />
       )}
-      {/* <pre>
-        {Boolean(responseBody) && JSON.stringify(responseBody, null, 3)}
-      </pre> */}
     </div>
   );
 }

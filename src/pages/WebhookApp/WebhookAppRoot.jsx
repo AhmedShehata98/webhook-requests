@@ -63,10 +63,7 @@ const WebhookAppRoot = () => {
   };
 
   const handleBlur = ({ target }) => {
-    let value = target.value;
-    Boolean(value)
-      ? dispatch(GET_BASIC_REQUEST_DATA(inputDataRef.current))
-      : null;
+    dispatch(GET_BASIC_REQUEST_DATA(inputDataRef.current));
   };
 
   const handleGetTargetMenu = useCallback((e) => {
@@ -104,7 +101,7 @@ const WebhookAppRoot = () => {
       <PageWrapper>
         <Asidebar />
         <MainApp>
-          <CurrentStatus />
+          <CurrentStatus url={urlRef.current?.value} />
           <section className="bg-zinc-600 px-1 py-2">
             <div className="w-full h-full flex flex-col">
               <ControlsBoxWrapper>
