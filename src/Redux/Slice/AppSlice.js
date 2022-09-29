@@ -1,8 +1,29 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+export const FETCTH_DATA_REQUEST = createAsyncThunk(
+  "app/send-request",
+  async (_, thunkApi) => {
+    const { getState, rejectWithValue } = thunkApi;
+    const {
+      app: { data },
+    } = getState();
+    try {
+      const request = await axios({
+        url: data.basicData.url,
+        method: data.basicData.method,
+      });
+      const result = await request;
+      return result;
+    } catch (error) {
+      throw rejectWithValue(error.message);
+    }
+  }
+);
+
 const initialState = {
   pending: false,
+  success: null,
   error: {
     isError: null,
     message: "",
@@ -14,15 +35,12 @@ const initialState = {
       url: "",
       method: "GET",
     },
-    params: {},
+    paramsQuerys: "",
     bodyData: {
       key: "",
       value: "",
     },
-    headers: {
-      key: "",
-      value: "",
-    },
+    headers: {},
   },
   //
   responseBody: null,
@@ -30,20 +48,6 @@ const initialState = {
   responseCookies: null,
 };
 
-export const FETCTH_DATA_REQUEST = createAsyncThunk(
-  "app/request-data",
-  async (_, thunkApi) => {
-    const { getState, rejectWithValue } = thunkApi;
-    const state = getState();
-
-    await axios({
-      url: state.data.basicData.url,
-      method: state.data.basicData.method,
-    })
-      .then((res) => res)
-      .catch((err) => rejectWithValue(err));
-  }
-);
 export const appSlice = createSlice({
   name: "app",
   initialState,
@@ -52,7 +56,11 @@ export const appSlice = createSlice({
       state.data.bodyData = { ...state.data.bodyData, ...actions.payload };
     },
     GET_REQUEST_PARAMS: (state, actions) => {
-      state.data.params = { ...actions.payload };
+      Boolean(state.data.paramsQuerys?.length >= 2) &&
+        (state.data.basicData.url = state.data.basicData.url.concat(
+          state.data.paramsQuerys
+        ));
+      state.data.paramsQuerys = actions.payload;
     },
     GET_REQUEST_HEADERS: (state, actions) => {
       state.data.headers = { ...state.data.headers, ...actions.payload };
@@ -65,15 +73,13 @@ export const appSlice = createSlice({
       state.inputMethod = actions.payload.inputMethod;
     },
     GET_BASIC_REQUEST_DATA: (state, actions) => {
-      state.data.basicData = {
-        ...state.data.basicData,
-        ...actions.payload,
-      };
+      state.data.basicData = { ...actions.payload };
     },
   },
   extraReducers: (builder) => {
     builder.addCase(FETCTH_DATA_REQUEST.pending, (state, actions) => {
       state.pending = true;
+      state.success = null;
       state.error = {
         isError: null,
         message: "",
@@ -91,9 +97,12 @@ export const appSlice = createSlice({
       state.responseBody = actions.payload.data;
       state.responseHeaders = actions.payload.headers;
       state.responseCookies = actions.payload.config;
+      state.success = true;
     });
+
     builder.addCase(FETCTH_DATA_REQUEST.rejected, (state, actions) => {
       state.pending = false;
+      state.success = null;
       state.error = {
         isError: true,
         message: actions.payload,

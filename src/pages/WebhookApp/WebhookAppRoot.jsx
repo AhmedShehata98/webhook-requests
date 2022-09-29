@@ -1,8 +1,8 @@
 import React, { lazy, Suspense, useCallback, useRef, useState } from "react";
-import { Link, Outlet, useOutlet } from "react-router-dom";
 
 //3rd party libraries
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, Outlet } from "react-router-dom";
 
 // components
 import Asidebar from "../../components/Asidebar";
@@ -26,30 +26,49 @@ import {
   FETCTH_DATA_REQUEST,
   GET_BASIC_REQUEST_DATA,
 } from "../../Redux/Slice/AppSlice";
+import { RoutesLinks } from "../../utilities/RoutesList";
+import { useEffect } from "react";
 
 const Headerbar = lazy(() => import("../../Layout/Headerbar/Headerbar"));
 
 const WebhookAppRoot = () => {
   const {
-    app: {
-      pending,
-      data: { basicData },
-    },
+    app: { pending, success },
   } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const ParamsInputRef = useRef(null);
   const HeaderInputRef = useRef(null);
   const BodyInputRef = useRef(null);
+  const urlRef = useRef(null);
+  const selectMethodRef = useRef(null);
+  const inputDataRef = useRef({
+    method: "GET",
+    url: "",
+  });
 
-  const handleChangeFormData = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    dispatch(GET_BASIC_REQUEST_DATA({ [name]: value }));
+  const handleChange = ({ target }) => {
+    let name = target.name;
+    let value = target.value;
+
+    if (Boolean(name === "method")) {
+      inputDataRef.current = { ...inputDataRef.current, method: value };
+    }
+    if (Boolean(name === "url")) {
+      inputDataRef.current = { ...inputDataRef.current, url: value };
+    }
   };
-  const handleSendData = () => {
-    console.log("start sending");
+  const handleSendData = (e) => {
     dispatch(FETCTH_DATA_REQUEST());
   };
+
+  const handleBlur = ({ target }) => {
+    let value = target.value;
+    Boolean(value)
+      ? dispatch(GET_BASIC_REQUEST_DATA(inputDataRef.current))
+      : null;
+  };
+
   const handleGetTargetMenu = useCallback((e) => {
     let targetTabID = e.target.dataset.id;
     let sectionID = [
@@ -69,6 +88,14 @@ const WebhookAppRoot = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (pending === false) {
+      Boolean(success)
+        ? navigate(`${RoutesLinks.response}/${RoutesLinks.bodyResponse}`)
+        : null;
+    }
+  }, [pending]);
+
   return (
     <>
       <Suspense fallback={<div>loading ..</div>}>
@@ -82,11 +109,12 @@ const WebhookAppRoot = () => {
             <div className="w-full h-full flex flex-col">
               <ControlsBoxWrapper>
                 <Select
+                  ref={selectMethodRef}
                   extraclass={"w-16 md:w-40 h-100 text-start pl-4"}
                   name="method"
                   id="method"
-                  value={basicData.method}
-                  onChange={handleChangeFormData}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
                 >
                   <option value="GET">GET</option>
                   <option value="POST">POST</option>
@@ -99,13 +127,14 @@ const WebhookAppRoot = () => {
                   <option value="PATCH">PATCH</option>
                 </Select>
                 <input
+                  ref={urlRef}
                   className="bg-slate-800 flex-1 focus:outline-none focus:border-2 focus:border-emerald-800 px-4"
                   name="url"
                   id="url"
-                  type={"text"}
+                  type={"url"}
                   placeholder="http://www.example.com/some/url"
-                  value={basicData.url}
-                  onChange={handleChangeFormData}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <Button
                   type={"button"}
