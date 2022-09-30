@@ -1,7 +1,7 @@
 {
   "name": "http-requests-app",
   "private": true,
-  "version": "1.2.2 alpha",
+  "version": "1.2.6 alpha",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -2,7 +2,7 @@ import React from "react";
 
 function ProparytiesInputListWrapper({ children }) {
   return (
-    <form className="min-w-full h-max bg-slate-700 border divide-y divide-emerald-400">
+    <form className="min-w-full h-max  border border-slate-500 divide-y divide-slate-500">
       {children}
     </form>
   );

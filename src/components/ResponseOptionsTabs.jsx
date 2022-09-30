@@ -4,22 +4,22 @@ import { RoutesLinks } from "../utilities/RoutesList";
 
 function ResponseOptionsTabs() {
   return (
-    <div className="flex w-full bg-zinc-600">
+    <div className="flex w-full bg-gray-800">
       <NavLink
         to={RoutesLinks.bodyResponse}
-        className="px-5 py-1 mb-1 font-semibold capitalize  hover:text-emerald-400 "
+        className="px-5 py-1 mb-1 font-semibold capitalize  hover:text-blue-200 "
       >
         body
       </NavLink>
       <NavLink
         to={RoutesLinks.cookiesResponse}
-        className="px-5 py-1 mb-1 font-semibold capitalize  hover:text-emerald-400 "
+        className="px-5 py-1 mb-1 font-semibold capitalize  hover:text-blue-200 "
       >
         cookies
       </NavLink>
       <NavLink
         to={RoutesLinks.headersResponse}
-        className="px-5 py-1 mb-1 font-semibold capitalize  hover:text-emerald-400 "
+        className="px-5 py-1 mb-1 font-semibold capitalize  hover:text-blue-200 "
       >
         headers
       </NavLink>

@@ -21,7 +21,7 @@ function RequestOptions({ handleGetTargetMenu }) {
   return (
     <nav className="w-max h-max flex flex-row mb-2">
       <button
-        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400  activeBtn"
+        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-blue-200  activeBtn"
         type="button"
         data-id="params"
         onClick={(e) => {
@@ -32,7 +32,7 @@ function RequestOptions({ handleGetTargetMenu }) {
         params
       </button>
       <button
-        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 "
+        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-blue-200 "
         type="button"
         data-id="headers"
         onClick={(e) => {
@@ -43,7 +43,7 @@ function RequestOptions({ handleGetTargetMenu }) {
         headers
       </button>
       <button
-        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-emerald-400 "
+        className="pl-3 pr-3 py-1 h-full flex items-center justify-center font-semibold capitalize  hover:text-blue-200 "
         type="button"
         data-id="body"
         onClick={(e) => {

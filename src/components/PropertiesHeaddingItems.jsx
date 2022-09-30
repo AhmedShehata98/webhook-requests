@@ -8,20 +8,20 @@ function PropertiesHeaddingItems() {
   // const { app } = useSelector((s) => s);
   const dispatch = useDispatch();
   return (
-    <span
-      key={nanoid(4)}
-      className="bg-slate-400 flex p-[4.5px] text-center divide-x-2"
-    >
-      <span key={nanoid(4)} className="w-10 font-medium uppercase">
+    <span key={nanoid(4)} className="properties-headding-row ">
+      <span key={nanoid(4)} className="w-11 properties-headding-cell">
         #
       </span>
-      <div key={nanoid(4)} className="w-2/5 font-medium uppercase">
+      <div key={nanoid(4)} className="properties-headding-cell">
         key
       </div>
-      <div key={nanoid(4)} className="w-2/5 font-medium uppercase">
+      <div key={nanoid(4)} className="properties-headding-cell">
         value
       </div>
-      <div key={nanoid(4)} className="w-1/6 flex justify-center">
+      <div
+        key={nanoid(4)}
+        className="w-1/6 h-inherit flex items-center justify-center flex justify-center"
+      >
         {/* <Button
           type={"button"}
           onClick={() =>

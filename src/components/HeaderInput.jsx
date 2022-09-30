@@ -33,20 +33,14 @@ const HeaderInput = forwardRef((_, ref) => {
     let clonedReactElement = React.cloneElement(
       <>
         <PropertiesInputItem>
-          <RequestCell
-            key={nanoid(4)}
-            className="w-11 font-medium uppercase flex justify-center items-center"
-          >
+          <RequestCell key={nanoid(4)} extraclass=" w-11">
             <input
               className="accent-emerald-400"
               type={"checkbox"}
               name={"selected-property"}
             />
           </RequestCell>
-          <RequestCell
-            key={nanoid(4)}
-            className="w-2/5 flex justify-start items-center  font-medium uppercase relative"
-          >
+          <RequestCell key={nanoid(4)}>
             <input
               ref={keyRef}
               className={"request-input-field"}

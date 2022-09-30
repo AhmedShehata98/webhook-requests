@@ -35,12 +35,12 @@ function CurrentStatus() {
     if (responseStatusCode === 400) return "text-yellow-300";
   };
   return (
-    <header className="bg-zinc-600 p-1 px-2 mb-5 ">
+    <header className="bg-slate-800 shadow-inner rounded-lg p-1 px-2 mb-5 ">
       <nav className="flex justify-between">
         <span className="h-inherit w-9 flex items-center justify-center">
-          <i className="fi fi-sr-globe text-[#D45235] text-lg"></i>
+          <i className="fi fi-sr-globe text-sky-600 text-lg leading-3"></i>
         </span>
-        <a className="h-inherit" href={url || "#"}>
+        <a className="h-inherit" href={url || "#"} target={"_blank"}>
           {Boolean(url) ? url : "No URL . Please fill out the URL field"}
         </a>
         <div className="h-inherit min-w-28  flex items-center gap-5 ">
@@ -48,11 +48,11 @@ function CurrentStatus() {
             ref={statusCodeRef}
             className="h-inherit text-slate-100 inline-flex items-center gap-2 "
           >
-            <i className="fi fi-sr-link-slash "></i>
+            <i className="fi fi-sr-link-slash text-sky-600 text-lg leading-3"></i>
             <code className="inline-block">{responseStatusCode}</code>
           </span>
           <span className="h-inherit text-slate-50 inline-flex items-center gap-2">
-            <i className="fi fi-sr-network "></i>
+            <i className="fi fi-sr-network text-sky-600 text-lg leading-3"></i>
             <code className="inline-block">{responseStatusText}</code>
           </span>
         </div>

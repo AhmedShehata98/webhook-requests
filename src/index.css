@@ -11,10 +11,22 @@
 
 @layer components {
   .checkbox-input {
-    @apply mx-auto w-full accent-emerald-700 hover:accent-emerald-600 inline-block;
+    @apply mx-auto w-full accent-sky-700 hover:accent-sky-400 inline-block;
   }
   .request-input-field {
-    @apply border-0 bg-slate-800 my-1  w-9/12 px-3 py-1 focus:outline-none focus:bg-slate-900;
+    @apply border border-slate-500 bg-slate-700 my-1  w-9/12 px-3 py-1 focus:outline-none focus:bg-slate-900;
+  }
+  .properties-table-row {
+    @apply bg-gray-800 flex justify-between divide-x divide-slate-500;
+  }
+  .properties-headding-row {
+    @apply h-9 bg-gray-800 flex items-center justify-between text-center divide-x divide-slate-500;
+  }
+  .properties-headding-cell {
+    @apply w-2/5 h-inherit flex items-center justify-center font-medium uppercase;
+  }
+  .properties-table-cell {
+    @apply w-2/5 flex justify-center items-center font-medium uppercase relative;
   }
 }
 @tailwind utilities;
@@ -40,8 +52,8 @@
   translate: -50% 0;
   height: 4px;
   width: 80%;
-  background-color: rgb(52, 211, 153);
   border-radius: 45px;
+  @apply bg-blue-400;
 }
 .activeBtn {
   position: relative;
@@ -55,6 +67,6 @@
   translate: -50% 0;
   height: 4px;
   width: 80%;
-  background-color: rgb(52, 211, 153);
   border-radius: 45px;
+  @apply bg-blue-400;
 }

@@ -37,6 +37,8 @@ const WebhookAppRoot = () => {
   } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const ResponsePannelRef = useRef(null);
+  const isFullScreen = useRef(false);
   const ParamsInputRef = useRef(null);
   const HeaderInputRef = useRef(null);
   const BodyInputRef = useRef(null);
@@ -85,6 +87,41 @@ const WebhookAppRoot = () => {
     });
   }, []);
 
+  const handleOpenInFullScreen = ({ target }) => {
+    isFullScreen.current = !isFullScreen.current;
+    console.log("first");
+    let fullScreenClasses = [
+      "fixed",
+      "w-5/6",
+      "top-2/4",
+      "left-2/4",
+      "-translate-x-2/4",
+      "-translate-y-2/4",
+      "h-3/4",
+    ];
+    const childrenClasses = ["p-2"];
+
+    if (Boolean(isFullScreen.current)) {
+      ResponsePannelRef.current.classList.remove(...["w-full", "min-w-full"]);
+      ResponsePannelRef.current.classList.add(...fullScreenClasses);
+      ResponsePannelRef.current.firstChild.classList.add(...childrenClasses);
+    } else {
+      ResponsePannelRef.current.classList.add(...["w-full", "min-w-full"]);
+      ResponsePannelRef.current.classList.remove(...fullScreenClasses);
+      ResponsePannelRef.current.firstChild.classList.remove(...childrenClasses);
+    }
+    changeFullScreenBtn(target);
+  };
+  const changeFullScreenBtn = (target) => {
+    if (Boolean(isFullScreen.current)) {
+      target.firstChild.className =
+        "fi fi-sr-compress leading-3 text-sm pointer-events-none select-none";
+    } else {
+      target.firstChild.className =
+        "fi fi-sr-expand leading-3 text-sm pointer-events-none select-none";
+    }
+  };
+
   useEffect(() => {
     if (pending === false) {
       Boolean(success)
@@ -102,7 +139,7 @@ const WebhookAppRoot = () => {
         <Asidebar />
         <MainApp>
           <CurrentStatus url={urlRef.current?.value} />
-          <section className="bg-zinc-600 px-1 py-2">
+          <section className="bg-slate-800 shadow-inner rounded-lg px-2 py-2">
             <div className="w-full h-full flex flex-col">
               <ControlsBoxWrapper>
                 <Select
@@ -125,7 +162,7 @@ const WebhookAppRoot = () => {
                 </Select>
                 <input
                   ref={urlRef}
-                  className="bg-slate-800 flex-1 focus:outline-none focus:border-2 focus:border-emerald-800 px-4"
+                  className="bg-slate-700 flex-1 border border-l-0  border-slate-600 focus:outline-none focus:bg-slate-700 focus:border-sky-800 px-4"
                   name="url"
                   id="url"
                   type={"url"}
@@ -135,7 +172,7 @@ const WebhookAppRoot = () => {
                 />
                 <Button
                   type={"button"}
-                  extraclass={"ml-2 w-28 "}
+                  extraclass={"ml-2 w-28 rounded-xl"}
                   onClick={() => handleSendData()}
                 >
                   {pending ? (
@@ -146,20 +183,32 @@ const WebhookAppRoot = () => {
                   ) : (
                     <>
                       send
-                      <i className="fi fi-sr-inbox-out border-l-2 pl-2 hover:border-[#D45235]"></i>
+                      <i className="fi fi-sr-inbox-out border-l-2 border-slate-600 pl-2 "></i>
                     </>
                   )}
                 </Button>
               </ControlsBoxWrapper>
               <RequestPannel>
-                <p className="font-normal uppercase ">resquest</p>
+                <p className="font-normal uppercase">resquest</p>
                 <RequestOptions handleGetTargetMenu={handleGetTargetMenu} />
                 <ParamsInput ref={ParamsInputRef} />
                 <HeaderInput ref={HeaderInputRef} />
                 <BodyInput ref={BodyInputRef} />
               </RequestPannel>
-              <h5 className="mt-2 mb-1 font-sans uppercase ">response </h5>
-              <ResponsePannel>
+              <ResponsePannel ref={ResponsePannelRef}>
+                <span className=" font-sans uppercase bg-gray-800 w-full flex justify-between items-center">
+                  response
+                  <div className="h-8 flex items-center bg-gray-800">
+                    <button
+                      type="button"
+                      className="h-8 flex items-center justify-center aspect-square cursor-pointer bg-slate-600 text-cyan-300  rounded-full hover:bg-slate-500"
+                      onClick={handleOpenInFullScreen}
+                    >
+                      <i className="fi fi-sr-expand leading-3 text-sm pointer-events-none select-none"></i>
+                    </button>
+                  </div>
+                </span>
+
                 <Outlet />
               </ResponsePannel>
             </div>
